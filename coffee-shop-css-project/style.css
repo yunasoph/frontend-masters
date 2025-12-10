@@ -1,0 +1,29 @@
+.checkout-header {
+    height: 50px;
+    background-color: rgb(71, 21, 21);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-logo {
+    display: inline;
+    padding-right: 2px;
+    height: 30px;
+    width: 30px;
+    background-color: rgb(71, 21, 21);;
+}
+
+.brand-name {
+    display: inline;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 10px;
+    color: rgb(189, 189, 104);
+}
+
+.checkout-items {
+    padding-top: 50px;
+    padding-left: 10px;
+    padding-right: 10px;
+    
+}

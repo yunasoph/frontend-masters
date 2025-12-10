@@ -1,3 +1,64 @@
+.border-1 {
+    border: 1px solid black;
+    padding-left: 5px;
+} 
+a {
+    text-decoration: none;
+    color: rgb(107, 87, 87);
+}
+.nav-bar {
+    display: grid;
+    text-align: center;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-area: nav-header;
+}
+a:hover {
+    text-decoration: underline;
+}
+.content-1 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-area: main-body-1;
+}
+
+.content-2 {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-area: main-body-2;
+}
+
+.grid {
+    display: grid;
+    border: 1px solid black;
+    grid-template-areas:
+    "nav-header nav-header nav-header"
+    "main-body-1 main-body-1 main-body-1"
+    "main-body-2 main-body-2 main-body-2"
+}
+
 .newspaper-heading {
+    font-family: "Apple Chancery","Comic Sans MS", cursive;
+    text-align: center;
+}
+
+.nav-bar-heading {
+    font-weight: bold;
+    color: grey;
+}
+
+.content-1-heading {
+    font-style: italic;
+    text-align: center;
     
+}
+
+.content-1-img {
+    padding-left: 100px;
+    height: 150px;
+    width: 150px;
+}
+
+.content-1-paragraph {
+    font-family:'Times New Roman', Times, serif;
+    font-size: 12px;
 }

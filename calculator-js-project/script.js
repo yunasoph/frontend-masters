@@ -2,6 +2,7 @@ let operandOne= "", operandTwo="", opCode= "";
 const inputSection= document.querySelector(".calculator-input");
 const ops= ['+', '-', 'x', '÷'];
 let isWaitingForSecondInput= false;
+let isCalculationDone=false;
 document.querySelector(".calculator").addEventListener("click", function (event) {
     if (event.target.tagName !== "BUTTON") {
         return; 
@@ -11,7 +12,13 @@ document.querySelector(".calculator").addEventListener("click", function (event)
         if(ops.includes(inputSection.value)){
             inputSection.value="";
         }
-        if(isWaitingForSecondInput) {
+        if(isCalculationDone) {
+            operandOne= "";
+            operandTwo= "";
+            inputSection.value="";
+            isCalculationDone=false;
+        }
+        if(!isWaitingForSecondInput) {
             operandOne+=numberOrSymbol;
         }
         else {
@@ -23,9 +30,13 @@ document.querySelector(".calculator").addEventListener("click", function (event)
         inputSection.value= numberOrSymbol;
         opCode= inputSection.value;
         isWaitingForSecondInput=true;
+        isCalculationDone=false;
     }
     else if(numberOrSymbol=="C") {
         inputSection.value="";
+        operandOne= "";
+        operandTwo="";
+        isWaitingForSecondInput=false;
     }
     else if(numberOrSymbol=="<-") {
         inputSection.value = inputSection.value.substring(0, inputSection.value.length-1);
@@ -35,10 +46,14 @@ document.querySelector(".calculator").addEventListener("click", function (event)
     }
 })
 document.querySelector(".calculate").addEventListener("click", function(event) {
-    operandTwo= parseInt(operandTwo);
-    operandOne= parseInt(operandOne);
-    const finalAnswer= calculateTwoNumbers(operandOne, operandTwo, opCode);
+    newOperandTwo= parseFloat(operandTwo);
+    newOperandOne= parseFloat(operandOne);
+    const finalAnswer= calculateTwoNumbers(newOperandOne, newOperandTwo, opCode);
     inputSection.value= finalAnswer;
+    operandOne=finalAnswer;
+    operandTwo="";
+    isWaitingForSecondInput=false;
+    isCalculationDone=true;
 })
 
 

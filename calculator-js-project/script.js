@@ -27,6 +27,7 @@ document.querySelector(".calculator").addEventListener("click", function (event)
         inputSection.value+=numberOrSymbol;
     }
     else if(ops.includes(numberOrSymbol)) {
+        operandOne=inputSection.value;
         inputSection.value= numberOrSymbol;
         opCode= inputSection.value;
         isWaitingForSecondInput=true;
@@ -40,12 +41,16 @@ document.querySelector(".calculator").addEventListener("click", function (event)
     }
     else if(numberOrSymbol=="<-") {
         inputSection.value = inputSection.value.substring(0, inputSection.value.length-1);
+        
     }
     else {
         return;
     }
 })
 document.querySelector(".calculate").addEventListener("click", function(event) {
+    if(!ops.includes(inputSection.value)) {
+        operandTwo=inputSection.value;
+    }
     newOperandTwo= parseFloat(operandTwo);
     newOperandOne= parseFloat(operandOne);
     const finalAnswer= calculateTwoNumbers(newOperandOne, newOperandTwo, opCode);

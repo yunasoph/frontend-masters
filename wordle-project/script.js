@@ -1,7 +1,7 @@
 const WORD_URL = "https://words.dev-apis.com/word-of-the-day";
 const VALID_URL = "https://words.dev-apis.com/validate-word";
 let currentColumn= 0, currentRow= 0;
-let wonTheGame= false, lostTheGame= false;
+let wonTheGame= false, lostTheGame= false, isLoading=false;
 const inputArray = [
     [".grid-1", ".grid-2", ".grid-3", ".grid-4", ".grid-5"],
     [".grid-6", ".grid-7", ".grid-8", ".grid-9", ".grid-10"],
@@ -41,66 +41,95 @@ function backSpace() {
     document.querySelector(inputArray[currentRow][currentColumn]).innerText= "";
 }
 
-function checkifValidAnswer(correctWord) {
-    if(isvalidResponse(correctWord)) {
-        return true;
-    }
-    //add class here
-    return false;
-}
-
 function checkifCorrectAnswer(correctWord) {
     if(correctWord==secretWord) {
         return true;
-        // add class here
     }
-   
     return false;
 }
 
-function colourTheLetters() {
-
+function colourTheLetters(caseToConsider) {
+    if(caseToConsider=="Won") {
+        for(let i=0; i<5; i++) {
+            const div= document.querySelector(inputArray[currentRow][i]);
+            div.classList.add("green");
+        }
+    }
+    else if(caseToConsider=="Invalid") {
+        for(let i=0; i<5; i++) {
+            document.querySelector(inputArray[currentRow][i]).classList.add("red");
+        }
+        setTimeout(function() {
+          for (let i = 0; i < 5; i++) {
+            document.querySelector(inputArray[currentRow][i]).  classList.remove("red");
+          }
+        }, 2000);
+    }
+    else {
+        for(let i=0;i<5;i++) {
+            const div=document.querySelector(inputArray[currentRow][i]);
+            if(secretWord.includes(div.innerText)) {
+                if(secretWord[i]==div.innerText) {
+                    div.classList.add("green");
+                }
+                else {
+                    div.classList.add("yellow");
+                }
+            }
+            else {
+                div.classList.add("grey");
+            }
+        }
+    }
 }
 
-function onPress(event) {
+async function onPress(event) {
     if(wonTheGame || lostTheGame) {
         return;
-        
     }
     if(event.key=="Backspace") {
         backSpace();
         return;
     }
+    if(isLoading) {
+        return;
+    }
 
     if(event.key=="Enter" && currentColumn==5) {
-        let correctWord= ""
+        let correctWord= "";
         for(let i=0; i<5; i++) {
             correctWord+=document.querySelector(inputArray[currentRow][i]).innerText;
         }
         if(checkifCorrectAnswer(correctWord)) {
             wonTheGame=true;
-            //add animation and alert
+            colourTheLetters("Won");
+            alert("You won!");
             return;
         }
-        if(checkifValidAnswer(correctWord)) {
-            colourTheLetters();
-            if(currentRow<6) {
+        isLoading= true;
+        const isValid= await isvalidResponse(correctWord);
+        isLoading=false;
+        if(isValid) {
+            colourTheLetters("Valid");
+            if(currentRow<5) {
                 currentRow++;
                 currentColumn=0;
+            }
+            else {
+                lostTheGame=true;
+               
+                alert(`You lost! The word was ${secretWord}`);
             }
             return;
         }
         else {
-            if(currentRow==5) {
-                lostTheGame=true;
-                //add alert
-                return;
-            }
+            alert("Not a valid word!");
+            colourTheLetters("Invalid")
         }
     }
 
     if(!isValidKey(event.key)) {
-        event.preventDefault;
+        event.preventDefault();
         return;
     }
     if(currentColumn<5) { 
